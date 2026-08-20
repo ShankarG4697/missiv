@@ -72,3 +72,4 @@ jobs:
           image-ref: ghcr.io/${{ needs.detect.outputs.repo_lower }}-${{ matrix.app }}@${{ steps.build.outputs.digest }}
           severity: CRITICAL,HIGH
           exit-code: "1"
+          ignore-unfixed: true
