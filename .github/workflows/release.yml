@@ -10,11 +10,29 @@ permissions:
   packages: write
 
 jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      apps: ${{ steps.check.outputs.apps }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        run: |
+          apps=()
+          [ -f apps/api/Dockerfile ] && apps+=("api")
+          [ -f apps/worker/Dockerfile ] && apps+=("worker")
+          [ -f apps/web/Dockerfile ] && apps+=("web")
+          json=$(printf '"%s",' "${apps[@]}")
+          json="[${json%,}]"
+          echo "apps=$json" >> "$GITHUB_OUTPUT"
+
   build-and-push:
+    needs: detect
+    if: needs.detect.outputs.apps != '[]'
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: [web, api, worker]
+        app: ${{ fromJson(needs.detect.outputs.apps) }}
     steps:
       - uses: actions/checkout@v4
 
