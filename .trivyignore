@@ -1,0 +1,8 @@
+# CVE-2026-53615: integer overflow in libblkid (util-linux), triggered by a
+# crafted disk image presented to the kernel (USB/loop-mount). This API
+# service never handles block devices -- unreachable in this context.
+# Debian's trixie-security fix (util-linux 2.41.5-0+deb13u1) exists but may
+# not have propagated into the python:3.12-slim-trixie image yet as of
+# 2026-08-20. Remove this line once it has -- check:
+# https://security-tracker.debian.org/tracker/CVE-2026-53615
+CVE-2026-53615
