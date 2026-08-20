@@ -17,6 +17,10 @@ RUN uv sync --frozen --no-dev
 
 FROM python:3.12-slim-trixie
 
+RUN apt-get update \
+    && apt-get install --only-upgrade -y util-linux \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN useradd --create-home --uid 1000 appuser
 WORKDIR /app
 

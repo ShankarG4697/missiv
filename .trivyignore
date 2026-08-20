@@ -6,3 +6,11 @@
 # 2026-08-20. Remove this line once it has -- check:
 # https://security-tracker.debian.org/tracker/CVE-2026-53615
 CVE-2026-53615
+
+# CVE-2026-53614: nosuid/noexec bypass in SUID mount(8) via
+# LIBMOUNT_FORCE_MOUNT2. Requires local shell access to set environment
+# variables before invoking mount(8) as another user -- this container runs
+# a single non-root process with no shell access exposed. Same trixie-security
+# fix (util-linux 2.41.5-0+deb13u1) as above; the Dockerfile now force-upgrades
+# util-linux at build time, so this should become unnecessary once confirmed.
+CVE-2026-53614
