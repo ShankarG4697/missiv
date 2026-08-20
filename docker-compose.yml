@@ -35,7 +35,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./apps/api:/app
+      - ./apps/api/app:/app/app
 
   # apps/worker needs a Dockerfile before this service will build.
   worker:
@@ -45,7 +45,7 @@ services:
       - rabbitmq
       - postgres
     volumes:
-      - ./apps/worker:/app
+      - ./apps/worker/app:/app/app
 
   # apps/web needs a Dockerfile before this service will build.
   web:
