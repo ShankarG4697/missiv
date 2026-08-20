@@ -2,7 +2,7 @@
 
 FROM ghcr.io/astral-sh/uv:0.11.7 AS uv
 
-FROM python:3.12-slim-trixie AS builder
+FROM python:3.12-slim-bookworm AS builder
 COPY --from=uv /uv /uvx /usr/local/bin/
 
 ENV UV_PYTHON_DOWNLOADS=never
@@ -15,7 +15,7 @@ RUN uv sync --frozen --no-dev --no-install-project
 COPY app ./app
 RUN uv sync --frozen --no-dev
 
-FROM python:3.12-slim-trixie
+FROM python:3.12-slim-bookworm
 
 RUN useradd --create-home --uid 1000 appuser
 WORKDIR /app
