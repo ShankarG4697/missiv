@@ -7,7 +7,23 @@ on:
     branches: [master]
 
 jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      api: ${{ steps.check.outputs.api }}
+      worker: ${{ steps.check.outputs.worker }}
+      web: ${{ steps.check.outputs.web }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        run: |
+          [ -f apps/api/pyproject.toml ] && echo "api=true" >> "$GITHUB_OUTPUT" || echo "api=false" >> "$GITHUB_OUTPUT"
+          [ -f apps/worker/pyproject.toml ] && echo "worker=true" >> "$GITHUB_OUTPUT" || echo "worker=false" >> "$GITHUB_OUTPUT"
+          [ -f apps/web/package.json ] && echo "web=true" >> "$GITHUB_OUTPUT" || echo "web=false" >> "$GITHUB_OUTPUT"
+
   api:
+    needs: detect
+    if: needs.detect.outputs.api == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -31,6 +47,8 @@ jobs:
         run: docker build -t api:ci .
 
   worker:
+    needs: detect
+    if: needs.detect.outputs.worker == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -52,6 +70,8 @@ jobs:
         run: docker build -t worker:ci .
 
   web:
+    needs: detect
+    if: needs.detect.outputs.web == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
